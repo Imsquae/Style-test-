@@ -23,4 +23,3 @@ databases:
     databaseName: marco
     user: marco
     plan: free 
-    
