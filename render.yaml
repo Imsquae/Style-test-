@@ -5,7 +5,7 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       flask db upgrade
-    startCommand: gunicorn wsgi:application
+    startCommand: gunicorn wsgi:application --workers 4 --bind 0.0.0.0:$PORT
     envVars:
       - key: FLASK_APP
         value: wsgi.py
@@ -17,6 +17,8 @@ services:
         fromDatabase:
           name: marco-db
           property: connectionString
+      - key: PYTHONPATH
+        value: /opt/render/project/src
 
 databases:
   - name: marco-db
