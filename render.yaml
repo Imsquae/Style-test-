@@ -2,11 +2,13 @@ services:
   - type: web
     name: marco-boutique
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn "app:create_app()"
+    buildCommand: |
+      pip install -r requirements.txt
+      flask db upgrade
+    startCommand: gunicorn wsgi:application
     envVars:
       - key: FLASK_APP
-        value: app.py
+        value: wsgi.py
       - key: FLASK_ENV
         value: production
       - key: SECRET_KEY
@@ -21,3 +23,4 @@ databases:
     databaseName: marco
     user: marco
     plan: free 
+    
