@@ -18,4 +18,7 @@ application = create_app()
 
 # Si vous utilisez des variables d'environnement, assurez-vous qu'elles sont chargées
 from dotenv import load_dotenv
-load_dotenv(os.path.join(project_home, '.env')) 
+load_dotenv(os.path.join(project_home, '.env'))
+
+if __name__ == '__main__':
+    application.run() 
