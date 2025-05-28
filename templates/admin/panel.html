@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Panneau d'Administration</h1>
+    
+    <!-- Menu rapide -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <a href="{{ url_for('admin.manage_users') }}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title">Gestion des Utilisateurs</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('admin.manage_boutiques') }}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-store fa-3x mb-3 text-success"></i>
+                    <h5 class="card-title">Gestion des Boutiques</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('admin.manage_categories') }}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-tags fa-3x mb-3 text-warning"></i>
+                    <h5 class="card-title">Gestion des Catégories</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url_for('admin.stats') }}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x mb-3 text-info"></i>
+                    <h5 class="card-title">Statistiques</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Utilisateurs</h5>
+                    <p class="card-text display-4">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Boutiques</h5>
+                    <p class="card-text display-4">{{ total_boutiques }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Avis</h5>
+                    <p class="card-text display-4">{{ total_reviews }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Derniers utilisateurs -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Derniers utilisateurs inscrits</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Email</th>
+                            <th>Date d'inscription</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in recent_users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières boutiques -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Dernières boutiques créées</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Propriétaire</th>
+                            <th>Date de création</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for boutique in recent_boutiques %}
+                        <tr>
+                            <td>{{ boutique.name }}</td>
+                            <td>{{ boutique.owner.username }}</td>
+                            <td>{{ boutique.created_at.strftime('%d/%m/%Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

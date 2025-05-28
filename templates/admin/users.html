@@ -1,0 +1,9 @@
+{% for user in users %}
+    <div class="user-item">
+        <span class="user-name">{{ user.username }}</span>
+        {% if user.is_admin %}
+            <span class="badge bg-danger">Admin</span>
+        {% endif %}
+        <!-- ... autres informations utilisateur ... -->
+    </div>
+{% endfor %} 

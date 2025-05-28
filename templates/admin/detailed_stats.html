@@ -1,0 +1,109 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+<div class="detailed-stats">
+    <h1>Statistiques détaillées</h1>
+    
+    <div class="stats-section">
+        <h2>Statistiques des boutiques</h2>
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Boutique</th>
+                    <th>Visites</th>
+                    <th>Avis</th>
+                    <th>Favoris</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in boutique_stats %}
+                <tr>
+                    <td>{{ stat.name }}</td>
+                    <td>{{ stat.visit_count }}</td>
+                    <td>{{ stat.review_count }}</td>
+                    <td>{{ stat.favorite_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="stats-section">
+        <h2>Top utilisateurs engagés</h2>
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Utilisateur</th>
+                    <th>Avis postés</th>
+                    <th>Favoris</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in user_stats %}
+                <tr>
+                    <td>{{ stat.username }}</td>
+                    <td>{{ stat.reviews }}</td>
+                    <td>{{ stat.favorites }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="stats-section">
+        <h2>Visites par jour</h2>
+        <canvas id="visitsChart"></canvas>
+    </div>
+</div>
+
+<style>
+.stats-section {
+    margin-bottom: 2rem;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.stats-table th,
+.stats-table td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.stats-table th {
+    background-color: #f5f5f5;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('visitsChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ visits_by_day|map(attribute='date')|list|tojson|safe }},
+        datasets: [{
+            label: 'Visites',
+            data: {{ visits_by_day|map(attribute='visits')|list|tojson|safe }},
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %} 

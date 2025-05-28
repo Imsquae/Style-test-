@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+<div class="admin-logs">
+    <h1>Logs système</h1>
+    
+    <div class="log-container">
+        {% if logs %}
+            <pre class="logs">
+                {% for log in logs %}
+                    {{ log }}
+                {% endfor %}
+            </pre>
+        {% else %}
+            <p>Aucun log disponible</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.log-container {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.logs {
+    max-height: 500px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+</style>
+{% endblock %} 

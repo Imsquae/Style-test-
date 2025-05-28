@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Modération - {{ user.username }}</h1>
+        <a href="{{ url_for('admin.manage_users') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Informations de l'utilisateur -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Informations utilisateur</h5>
+                </div>
+                <div class="card-body">
+                    <img src="{{ user.profile_picture_url }}" alt="Photo de profil" 
+                         class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Date d'inscription:</strong> {{ user.created_at.strftime('%d/%m/%Y') }}</p>
+                    <p><strong>Statut:</strong> 
+                        {% if user.is_banned %}
+                            <span class="badge bg-danger">Banni</span>
+                        {% else %}
+                            <span class="badge bg-success">Actif</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Avertissements:</strong> {{ user.warning_count }}</p>
+                    {% if user.last_warning %}
+                        <p><strong>Dernier avertissement:</strong> {{ user.last_warning.strftime('%d/%m/%Y %H:%M') }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions de modération -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Actions de modération</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="moderation-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="mb-3">
+                            <label class="form-label">Action</label>
+                            <select name="action" class="form-select" required>
+                                <option value="">Choisir une action...</option>
+                                <option value="warn">Envoyer un avertissement</option>
+                                {% if not user.is_banned %}
+                                    <option value="ban">Bannir l'utilisateur</option>
+                                {% else %}
+                                    <option value="unban">Débannir l'utilisateur</option>
+                                {% endif %}
+                                <option value="reset_warnings">Réinitialiser les avertissements</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Raison</label>
+                            <textarea name="reason" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-gavel"></i> Appliquer l'action
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Historique de modération -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Historique de modération</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.moderation_notes %}
+                        <div class="moderation-history">
+                            {% for note in user.moderation_notes.split('\n') %}
+                                {% if note.strip() %}
+                                    <div class="moderation-note mb-2">
+                                        <small class="text-muted">{{ note }}</small>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucun historique de modération</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <h3>Administration</h3>
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de bord</a></li>
+                <li><a href="{{ url_for('admin.manage_boutiques') }}">Boutiques</a></li>
+                <li><a href="{{ url_for('admin.manage_users') }}">Utilisateurs</a></li>
+                <li><a href="{{ url_for('admin.manage_categories') }}">Catégories</a></li>
+                <li><a href="{{ url_for('admin.stats') }}">Statistiques</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="admin-content">
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %} 

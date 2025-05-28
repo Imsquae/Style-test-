@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+<div class="admin-form-container">
+    <h2>Nouvelle Catégorie</h2>
+    
+    <form method="POST" class="admin-form">
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Créer</button>
+            <a href="{{ url_for('admin.manage_categories') }}" class="btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

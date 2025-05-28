@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+<div class="admin-form-container">
+    <h2>Modifier l'utilisateur</h2>
+    
+    <form method="POST" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                Administrateur
+            </label>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Enregistrer</button>
+            <a href="{{ url_for('admin.manage_users') }}" class="btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 
